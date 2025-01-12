@@ -1,4 +1,10 @@
+from textnode import TextNode
+from textnode import TextType
+
+
 def main():
-    print("Hello World")
+    node = TextNode("Test", TextType.NORMAL, "www.google.com")
+    print(node.__repr__())
+
 
 main()
