@@ -23,6 +23,10 @@ class TestHTMLNode(unittest.TestCase):
         node.props_to_html()
         self.assertEqual(node.props_to_html(),
                          ' href="https://www.google.com" target="_blank"')
+        
+    def test_no_props_returns_empty_string(self):
+        node = HTMLNode("div", "This is a test node", None, None)
+        self.assertEqual(node.props_to_html(), "")
 
     def test_to_html_raises_not_implemented(self):
         node = HTMLNode("div", "This is a test node", None, {
