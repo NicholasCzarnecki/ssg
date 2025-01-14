@@ -1,19 +1,12 @@
 from textnode import TextNode
 from textnode import TextType
-from htmlnode import HTMLNode
+from htmlnode import HTMLNode, LeafNode
 
 
 def main():
-    node = TextNode("Test", TextType.NORMAL, "www.google.com")
-    print(node.__repr__())
+    node = LeafNode("p", "This is a paragraph of text.")
 
-    node2 = HTMLNode("div", "This is a text node", None, {
-        "href": "https//www.google.com",
-        "target": "_blank",
-    })
-
-    print(node2.__repr__())
-    print(node2.props_to_html())
-
+    print(node.to_html())
+    print(repr(node))
 
 main()
