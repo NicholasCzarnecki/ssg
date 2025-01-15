@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HTMLNode, LeafNode
+from htmlnode import HTMLNode, LeafNode, ParentNode
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -52,6 +52,34 @@ class TestHTMLNode(unittest.TestCase):
     def test_leafnode_to_html_returns_value_if_tag_is_none(self):
         node = LeafNode(None, "Click me!", {"href": "https://www.google.com"})
         self.assertEqual(node.to_html(), "Click me!")
+
+    ## PARENTNODE TESTS BELOW ##
+
+    def test_parentnode_repr(self):
+        node = ParentNode("div", [LeafNode("a", "Click me!", {"href": "https://www.google.com"})])
+        self.assertEqual(repr(node), "ParentNode(div, [LeafNode(a, Click me!, {'href': 'https://www.google.com'})], None)")
+
+    def test_parentnode_to_html(self):
+        node = ParentNode("div", [LeafNode("a", "Click me!", {"href": "https://www.google.com"})])
+        self.assertEqual(node.to_html(), '<div><a href="https://www.google.com">Click me!</a></div>')
+
+    def test_parentnode_to_html_raises_value_error_if_tag_is_none(self):
+        node = ParentNode(None, [LeafNode("a", "Click me!", {"href": "https://www.google.com"})])
+        self.assertRaises(ValueError, node.to_html)
+
+    def test_parentnode_to_html_raises_value_error_if_children_is_none(self):
+        node = ParentNode("div", None)
+        self.assertRaises(ValueError, node.to_html)
+
+    # Test all the edge cases you can think of, including nesting ParentNode objects inside of one another, multiple children, and no children.
+
+    def test_parentnode_to_html_can_handle_nested_parent_nodes(self):
+        node = ParentNode("div", [ParentNode("span", [LeafNode("a", "Click me!", {"href": "https://www.google.com"})])])
+        self.assertEqual(node.to_html(), '<div><span><a href="https://www.google.com">Click me!</a></span></div>')
+
+    def test_parentnode_to_html_can_handle_multiple_children(self):
+        node = ParentNode("div", [LeafNode("a", "Click me!", {"href": "https://www.google.com"}), LeafNode("a", "Click me!", {"href": "https://www.google.com"})])
+        self.assertEqual(node.to_html(), '<div><a href="https://www.google.com">Click me!</a><a href="https://www.google.com">Click me!</a></div>')
 
 
 if __name__ == "__main__":
